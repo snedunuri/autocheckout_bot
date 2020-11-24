@@ -1,4 +1,5 @@
 import time
+import random
 
 from datetime import datetime
 from selenium import webdriver
@@ -7,17 +8,17 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from webdriver_manager.chrome import ChromeDriverManager
 
-from config.current import (
+from config import (
     CONF,
     eastern_tz
 )
+from constants import USER_AGENT_DATA_PATH
 
 
 class WalmartCheckoutBot:
 
     def __init__(self, is_dry_run=False):
         self.is_dry_run = is_dry_run
-
         self.options = webdriver.ChromeOptions()
         self.options.add_argument(
             f'--user-data-dir={CONF["chrome_profile_dir"]}'
@@ -25,6 +26,13 @@ class WalmartCheckoutBot:
 
         self.driver_path = ChromeDriverManager().install()
         self.driver = None
+
+    @staticmethod
+    def get_random_user_agent():
+        with open(USER_AGENT_DATA_PATH, 'r') as _file:
+            agents = _file.readlines()
+            idx = random.randint(0, len(agents))
+        return agents[idx]
 
     def execute(self):
         self.wait_for_launch()
@@ -40,7 +48,6 @@ class WalmartCheckoutBot:
         for url in CONF['item_urls']:
             self.driver.get(url)
 
-            # get add to cart button
             add_to_cart_class_name = 'button.spin-button.prod-ProductCTA--primary.button--primary'
             self.wait(By.CLASS_NAME, add_to_cart_class_name)
             add_to_cart_btn = self.driver.find_element_by_class_name(
@@ -94,8 +101,8 @@ class WalmartCheckoutBot:
             )
             place_order_btn.click()
 
-    def wait(self, by, value):
-        wait = WebDriverWait(self.driver, 10000000000000)
+    def wait(self, by, value, timeout=10000000000000):
+        wait = WebDriverWait(self.driver, timeout)
         wait.until(
             expected_conditions.visibility_of_element_located(
                 (
