@@ -5,7 +5,7 @@ eastern_tz = timezone('EST')
 
 CONF = {
     # 'launch_time': datetime(2020, 11, 25, 21, 0, 0, tzinfo=eastern_tz),
-    'launch_time': datetime(2020, 11, 22, 12, 0, 0, tzinfo=eastern_tz),
+    'launch_time': datetime(2020, 11, 22, 12, 20, 0, tzinfo=eastern_tz),
     'item_urls': [
         # 'https://www.walmart.com/ip/PlayStation-5-Console/363472942',
         # 'https://www.walmart.com/ip/XB1-Xbox-Series-X/443574645'
