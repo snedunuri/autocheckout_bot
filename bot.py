@@ -35,14 +35,15 @@ class WalmartCheckoutBot:
         return agents[idx]
 
     def execute(self):
-        self.wait_for_launch()
-
         self.driver = webdriver.Chrome(
             self.driver_path,
             options=self.options
         )
 
         self.driver.maximize_window()
+
+        self.wait_for_launch()
+        self.driver.refresh()
 
         # add items to cart
         for url in CONF['item_urls']:
