@@ -43,7 +43,6 @@ class WalmartCheckoutBot:
         self.driver.maximize_window()
 
         self.wait_for_launch()
-        self.driver.refresh()
 
         # add items to cart
         for url in CONF['item_urls']:
